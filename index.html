@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fire Spell</title>
+<!-- ta:head -->
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#FFD84A">
+<style id="ta-loader-css">
+  /* Techartist loader (toolkit/brand), Bounce look since 2026-11-18: sunshine, the logo's ball bouncing on its i, the
+     word, the piece's title, a bar with a live percentage, Enter (and Enter without sound) for pieces with sound, and the
+     ©. Critical CSS: inline it so the very first paint is already branded. Same markup hooks as before (loader.js). */
+  #ta-loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; background: #FFD84A; color: #121225;
+    font: 600 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; transition: opacity 0.6s ease 0.1s, visibility 0s 0.75s; }
+  #ta-loader.ta-done { opacity: 0; visibility: hidden; pointer-events: none; }
+  #ta-loader .ta-in { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 24px; }
+  #ta-loader .ta-bnc { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  #ta-loader .ta-bnc-mk { position: relative; width: 60px; height: 104px; }
+  #ta-loader .ta-bnc-mk i { position: absolute; left: 20px; bottom: 0; width: 20px; height: 44px; border-radius: 10px; background: #2B2BD9; }
+  #ta-loader .ta-bnc-mk b { position: absolute; left: 15px; bottom: 50px; width: 30px; height: 30px; border-radius: 50%; background: #FF6A12; transform-origin: 50% 100%; animation: ta-bnc-b 0.9s infinite; }
+  @keyframes ta-bnc-b { 0%, 100% { translate: 0 -48px; scale: 1; animation-timing-function: cubic-bezier(.45, 0, 1, .6); } 46% { translate: 0 0; scale: 1; animation-timing-function: linear; } 52% { translate: 0 1px; scale: 1.28 0.72; animation-timing-function: linear; } 58% { translate: 0 0; scale: 1; animation-timing-function: cubic-bezier(0, .45, .6, 1); } }
+  #ta-loader .ta-bnc svg { display: block; width: clamp(150px, 24vmin, 210px); height: auto; }
+  #ta-loader .ta-title { font-size: 13px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #121225; }
+  #ta-loader .ta-bar { width: clamp(150px, 22vmin, 190px); height: 10px; border-radius: 9px; border: 2.5px solid #121225; background: #FFFFFF; overflow: hidden; box-sizing: content-box; }
+  #ta-loader .ta-bar i { display: block; height: 100%; width: calc(var(--ta-p, 0) * 100%); min-width: 14%; background: #2B2BD9; transition: width 0.35s ease; position: relative; overflow: hidden; }
+  #ta-loader .ta-bar i::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0)); transform: translateX(-100%); animation: ta-shimmer 1.1s ease-in-out infinite; }
+  #ta-loader.ta-wait .ta-bar i { animation: ta-run 1.3s ease-in-out infinite; }
+  #ta-loader .ta-pct { margin-top: -4px; font: 800 14px/1 system-ui, -apple-system, sans-serif; font-variant-numeric: tabular-nums; color: #121225; }
+  #ta-loader.ta-ready .ta-pct { display: none; }
+  #ta-loader .ta-msg { max-width: 440px; text-align: center; color: #121225; min-height: 1em; }
+  #ta-loader .ta-copy { position: absolute; left: 0; right: 0; bottom: max(16px, env(safe-area-inset-bottom)); text-align: center; font-size: 13px; font-weight: 700; color: #121225; }
+  @keyframes ta-shimmer { to { transform: translateX(100%); } }
+  @keyframes ta-run { 0% { transform: translateX(-100%); } 100% { transform: translateX(700%); } }
+  @keyframes ta-fade { from { opacity: 0; } to { opacity: 1; } }
+  /* Enter gate: the loader finishes on Enter (the click unlocks sound), with a quiet way in without sound */
+  #ta-loader .ta-go { display: none; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; }
+  #ta-loader.ta-ready .ta-go { display: flex; animation: ta-fade 0.4s ease both; }
+  #ta-loader.ta-ready .ta-bar { display: none; }
+  #ta-loader .ta-enter { font: 800 15px/1 system-ui, -apple-system, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: #FFD84A; cursor: pointer;
+    padding: 13px 30px 14px; border-radius: 999px; border: 3px solid #121225; background: #121225; box-shadow: 0 5px 0 rgba(18, 18, 37, 0.35); }
+  #ta-loader .ta-enter:hover, #ta-loader .ta-enter:focus-visible { background: #26264A; outline: 3px solid #2B2BD9; outline-offset: 3px; }
+  #ta-loader .ta-enter:active { transform: translateY(3px); box-shadow: none; }
+  #ta-loader .ta-quiet { font: 700 13px/1.2 system-ui, -apple-system, sans-serif; color: #121225; background: none; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+  @media (prefers-reduced-motion: reduce) { #ta-loader * { animation: none !important; } #ta-loader .ta-bnc-mk b { translate: 0 -10px; } }
+</style>
+<!-- /ta:head -->
+<style>
+  :root { --ink: #f3e7d6; --dim: rgba(243, 231, 214, 0.55); --gold: #ffb45a; --line: rgba(255, 190, 120, 0.22); --pane: rgba(14, 12, 14, 0.72); }
+  html, body { margin: 0; height: 100%; background: #03050a; overflow: hidden; font: 500 13px/1.3 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); }
+  #stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  [hidden] { display: none !important; }
+  #bar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 6px 8px;
+    background: var(--pane); border: 1px solid var(--line); border-radius: 999px; opacity: 0; transition: opacity .5s; }
+  body.ready #bar { opacity: 1; }
+  #bar button { all: unset; box-sizing: border-box; cursor: pointer; height: 34px; min-width: 34px; padding: 0 10px; border-radius: 999px; display: grid; place-items: center;
+    color: var(--ink); font: inherit; letter-spacing: .02em; }
+  #bar button:hover { background: rgba(255, 180, 90, 0.14); }
+  #bar button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+  #bar svg { width: 16px; height: 16px; fill: currentColor; display: block; }
+  #play[data-on="1"] .i-play, #play[data-on="0"] .i-pause { display: none; }
+  #slow[data-on="1"] { background: var(--gold); color: #1a0f05; }
+  #bar #sound { display: inline-flex; align-items: center; gap: 6px; }
+  #sound[data-on="1"] .i-off, #sound[data-on="0"] .i-on, #sound[data-on="1"] .lbl { display: none; }
+  #sound[data-on="1"] { color: var(--gold); }
+  @media (max-width: 520px) { #sound .lbl { display: none; } }
+  #track { --p: 0; position: relative; width: min(34vw, 300px); height: 34px; margin: 0 8px 0 4px; }
+  #track::before, #rail { content: ""; position: absolute; left: 0; right: 0; top: 15px; height: 4px; border-radius: 2px; }
+  #track::before { background: rgba(255, 255, 255, 0.14); }
+  #rail { overflow: hidden; }
+  #fill { width: 100%; height: 100%; background: linear-gradient(90deg, #6fa8ff, #ffb45a 45%, #ff6a2a); transform-origin: 0 50%; transform: scaleX(0); }
+  #ticks i { position: absolute; top: 11px; width: 2px; height: 12px; margin-left: -1px; border-radius: 1px; background: rgba(243, 231, 214, 0.3); }
+  #track::after { content: ""; position: absolute; top: 10px; left: calc(var(--p) * 100% - 7px); width: 14px; height: 14px; border-radius: 50%; background: var(--ink);
+    box-shadow: 0 0 0 3px rgba(255, 180, 90, 0.35); pointer-events: none; }
+  #scrub { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+  #track:focus-within::after { box-shadow: 0 0 0 3px var(--gold); }
+  #beat { position: fixed; left: 50%; bottom: 68px; transform: translateX(-50%); display: flex; gap: 10px; align-items: baseline; padding: 5px 12px; border-radius: 999px;
+    background: var(--pane); border: 1px solid var(--line); white-space: nowrap; opacity: 0; transition: opacity .25s; pointer-events: none; }
+  #beat b { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--gold); min-width: 3.4em; text-align: right; }
+  body.scrubbing #beat, body:has(#track:hover) #beat, body:has(#scrub:focus-visible) #beat { opacity: 1; }
+  #bar #layers { display: inline-flex; align-items: center; gap: 6px; }
+  #bar #layers[data-on="1"], #bar #slow[data-on="1"] { background: var(--gold); color: #1a0f05; }
+  /* the breakdown: one slim strip above the controls */
+  #panel { position: fixed; left: 50%; bottom: 74px; transform: translateX(-50%); display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 2px;
+    width: max-content; max-width: calc(100vw - 16px); box-sizing: border-box; padding: 4px 5px; border-radius: 17px; background: var(--pane); border: 1px solid var(--line); }
+  #stack { display: contents; }
+  #panel button { all: unset; box-sizing: border-box; cursor: pointer; font: inherit; font-size: 12px; color: var(--ink); height: 26px; padding: 0 9px 0 7px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  #panel button:hover { background: rgba(255, 180, 90, 0.14); }
+  #panel button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+  #panel button[aria-pressed="true"] { background: rgba(255, 180, 90, 0.24); font-weight: 600; }
+  #panel svg { width: 11px; height: 11px; fill: currentColor; display: block; }
+  .sw { flex: none; width: 10px; height: 10px; border-radius: 3px; background: #888; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25); }
+  .sw-all { background: conic-gradient(#8fb8ff, #ffc76a, #ff6a2a, #ffe9a8, #8fb8ff); }
+  .sw-seal { background: linear-gradient(135deg, #a9c9ff, #ffd27a); }
+  .sw-crescents { background: #ff8a2a; border-radius: 50% 50% 50% 2px; }
+  .sw-fire { background: radial-gradient(circle at 50% 70%, #fff0b8, #ff7a1e 55%, #7a1206); }
+  .sw-bolt { background: linear-gradient(90deg, #7a1206, #ffb13b 60%, #fff2c4); }
+  .sw-light { background: linear-gradient(135deg, #f6ead8 50%, #2a2622 50%); }
+  .raws { display: inline-flex; gap: 1px; padding: 0 3px; margin: 0 2px; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+  #panel .raws button { padding: 0 7px; font-size: 11.5px; color: var(--dim); }
+  #panel .raws button[aria-pressed="true"] { background: var(--ink); color: #1a0f05; }
+  #panel #tour { margin-left: 3px; padding: 0 9px 0 8px; border: 1px solid var(--line); }
+  #panel #tour .i-stop, #panel #tour[aria-pressed="true"] .i-go { display: none; }
+  #panel #tour[aria-pressed="true"] { background: var(--gold); color: #1a0f05; }
+  #panel #tour[aria-pressed="true"] .i-stop { display: block; }
+  #panel #about { padding: 0; width: 26px; justify-content: center; font-weight: 700; font-family: ui-serif, Georgia, serif; font-style: italic; color: var(--dim); }
+  #panel #about[aria-expanded="true"] { background: var(--ink); color: #1a0f05; }
+  #how { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); box-sizing: border-box; width: min(380px, calc(100vw - 16px)); margin: 0; padding: 9px 13px;
+    border-radius: 12px; background: var(--pane); border: 1px solid var(--line); font-size: 12px; line-height: 1.45; color: var(--ink); }
+  body.breakdown #beat { bottom: 116px; }
+  body.about #beat { display: none; }
+  @media (max-width: 640px) {
+    #bar { bottom: 10px; gap: 2px; }
+    #track { width: min(30vw, 150px); }
+    #layers .lbl, #tour .lbl { display: none; }
+    #panel { bottom: 64px; }
+    #panel #tour { padding: 0 8px; }
+    #beat { bottom: 60px; }
+    body.breakdown #beat { bottom: 136px; }
+  }
+  /* the © stays on screen: people screen-record live pieces */
+  #copy { position: fixed; right: 12px; top: 10px; padding: 3px 9px; border-radius: 999px; background: rgba(14, 12, 14, 0.58); font-size: 11.5px; font-weight: 600; letter-spacing: .02em; color: rgba(243, 231, 214, 0.9); pointer-events: none; }
+</style>
+</head>
+<body>
+<!-- ta:loader -->
+<div id="ta-loader" class="ta-wait" role="status" aria-live="polite" aria-label="Loading"><div class="ta-in"><div class="ta-bnc" aria-hidden="true"><div class="ta-bnc-mk"><b></b><i></i></div><svg class="ta-logo" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="-14 -998 6659 1035" ><path fill="#2B2BD9" d="M5.79998779296875 -405.200927734375V-504.2003173828125L120.40008544921875 -556.0L219.9993896484375 -728.3997802734375H349.59857177734375V-573.1998901367188H582.1990356445312V-405.200927734375H349.59857177734375V-261.79937744140625Q349.59857177734375 -203.59918212890625 372.4986877441406 -179.89910888671875Q395.3988037109375 -156.19903564453125 461.1988525390625 -156.19903564453125Q501.9989013671875 -156.19903564453125 533.9989318847656 -162.49908447265625Q565.9989624023438 -168.79913330078125 592.1990356445312 -178.79925537109375V-10.2001953125Q559.7991333007812 0.39984130859375 510.69915771484375 8.799896240234375Q461.59918212890625 17.199951171875 408.39923095703125 17.199951171875Q310.199462890625 17.199951171875 246.399658203125 -12.70001220703125Q182.599853515625 -42.5999755859375 151.49996948242188 -98.69985961914062Q120.40008544921875 -154.79974365234375 120.40008544921875 -231.3995361328125V-405.200927734375Z M995.7997436523438 17.199951171875Q890.3998413085938 17.199951171875 807.3999328613281 -21.10003662109375Q724.4000244140625 -59.4000244140625 676.4000854492188 -128.39999389648438Q628.400146484375 -197.39996337890625 628.400146484375 -288.7999267578125Q628.400146484375 -379.19989013671875 674.7000732421875 -446.8998718261719Q721.0 -514.599853515625 801.2998962402344 -552.4998474121094Q881.5997924804688 -590.3998413085938 982.19970703125 -590.3998413085938Q1086.799560546875 -590.3998413085938 1160.6994934082031 -546.6998596191406Q1234.5994262695312 -502.9998779296875 1274.1994018554688 -423.1999206542969Q1313.7993774414062 -343.39996337890625 1313.7993774414062 -234.60003662109375H815.1988525390625V-347.99981689453125H1182.400390625L1115.0004272460938 -310.1998291015625Q1110.4004516601562 -352.60003662109375 1093.7003479003906 -381.40020751953125Q1077.000244140625 -410.20037841796875 1049.5000610351562 -425.30047607421875Q1021.9998779296875 -440.40057373046875 983.9996337890625 -440.40057373046875Q942.1994018554688 -440.40057373046875 912.4992065429688 -422.20050048828125Q882.7990112304688 -404.00042724609375 867.1988830566406 -372.10028076171875Q851.5987548828125 -340.20013427734375 851.5987548828125 -299.19989013671875Q851.5987548828125 -248.19970703125 874.4988403320312 -212.99954223632812Q897.39892578125 -177.79937744140625 943.0990295410156 -159.29928588867188Q988.7991333007812 -140.7991943359375 1056.7991943359375 -140.7991943359375Q1121.7991943359375 -140.7991943359375 1184.5992736816406 -158.0992431640625Q1247.3993530273438 -175.3992919921875 1299.3993530273438 -207.599365234375V-73.5999755859375Q1237.7994995117188 -29.60003662109375 1157.6995849609375 -6.200042724609375Q1077.5996704101562 17.199951171875 995.7997436523438 17.199951171875Z M2094.59912109375 -246.9996337890625Q2086.9990844726562 -168.19976806640625 2037.9991455078125 -108.69985961914062Q1988.9992065429688 -49.199951171875 1910.5993347167969 -16.0Q1832.199462890625 17.199951171875 1734.1996459960938 17.199951171875Q1626.5997924804688 17.199951171875 1544.4999084472656 -21.10003662109375Q1462.4000244140625 -59.4000244140625 1416.4000854492188 -128.0Q1370.400146484375 -196.5999755859375 1370.400146484375 -286.199951171875Q1370.400146484375 -376.59991455078125 1416.4000854492188 -444.7998962402344Q1462.4000244140625 -512.9998779296875 1544.4999084472656 -551.6998596191406Q1626.5997924804688 -590.3998413085938 1734.1996459960938 -590.3998413085938Q1832.199462890625 -590.3998413085938 1910.5993347167969 -557.1998901367188Q1988.9992065429688 -523.9999389648438 2037.9991455078125 -464.9000244140625Q2086.9990844726562 -405.80010986328125 2094.59912109375 -326.000244140625H1867.6005859375Q1857.6005249023438 -373.20050048828125 1821.8002624511719 -397.6006774902344Q1786.0 -422.0008544921875 1734.1996459960938 -422.0008544921875Q1694.1993408203125 -422.0008544921875 1663.9991149902344 -406.500732421875Q1633.7988891601562 -391.0006103515625 1617.6987609863281 -360.7004089355469Q1601.5986328125 -330.40020751953125 1601.5986328125 -286.199951171875Q1601.5986328125 -242.19970703125 1617.6987609863281 -212.19949340820312Q1633.7988891601562 -182.19927978515625 1663.9991149902344 -166.69915771484375Q1694.1993408203125 -151.19903564453125 1734.1996459960938 -151.19903564453125Q1786.2000122070312 -151.19903564453125 1822.0002746582031 -177.39920043945312Q1857.800537109375 -203.599365234375 1867.6005859375 -246.9996337890625Z M2169.2002563476562 -770.0H2398.3987426757812V0.0H2169.2002563476562ZM2602.5990600585938 -590.3998413085938Q2685.7990112304688 -590.3998413085938 2744.198974609375 -557.1998596191406Q2802.5989379882812 -523.9998779296875 2833.6989135742188 -463.69989013671875Q2864.7988891601562 -403.39990234375 2864.7988891601562 -321.79986572265625V0.0H2635.6004028320312V-288.800048828125Q2635.6004028320312 -345.00054931640625 2606.1002197265625 -374.9007873535156Q2576.6000366210938 -404.801025390625 2522.1996459960938 -404.801025390625Q2483.9993896484375 -404.801025390625 2456.0991821289062 -389.10089111328125Q2428.198974609375 -373.4007568359375 2413.298858642578 -344.2005310058594Q2398.3987426757812 -315.00030517578125 2398.3987426757812 -274.4000244140625L2329.1990966796875 -309.79986572265625Q2342.1990356445312 -402.59979248046875 2381.5989990234375 -464.9997863769531Q2420.9989624023438 -527.3997802734375 2478.198974609375 -558.8998107910156Q2535.3989868164062 -590.3998413085938 2602.5990600585938 -590.3998413085938Z M3473.4005126953125 0.0 3445.8005981445312 -204.40008544921875 3474.2005615234375 -286.199951171875 3445.8005981445312 -366.99981689453125 3473.4005126953125 -573.1998901367188H3711.39892578125L3673.3990478515625 -286.99993896484375L3711.39892578125 0.0ZM3523.8003540039062 -286.199951171875Q3512.000244140625 -194.79998779296875 3471.6001892089844 -126.60000610351562Q3431.2001342773438 -58.4000244140625 3367.5001220703125 -20.60003662109375Q3303.8001098632812 17.199951171875 3222.400146484375 17.199951171875Q3138.6001586914062 17.199951171875 3075.0001525878906 -20.700042724609375Q3011.400146484375 -58.60003662109375 2975.8001403808594 -127.20001220703125Q2940.2001342773438 -195.79998779296875 2940.2001342773438 -286.199951171875Q2940.2001342773438 -377.59991455078125 2975.8001403808594 -446.0998840332031Q3011.400146484375 -514.599853515625 3075.0001525878906 -552.4998474121094Q3138.6001586914062 -590.3998413085938 3222.400146484375 -590.3998413085938Q3303.8001098632812 -590.3998413085938 3367.5001220703125 -552.9998474121094Q3431.2001342773438 -515.599853515625 3472.1001892089844 -447.4998779296875Q3513.000244140625 -379.39990234375 3523.8003540039062 -286.199951171875ZM3171.3986206054688 -286.199951171875Q3171.3986206054688 -248.399658203125 3186.8987426757812 -219.2994384765625Q3202.3988647460938 -190.19921875 3230.1990661621094 -173.29910278320312Q3257.999267578125 -156.39898681640625 3294.1995239257812 -156.39898681640625Q3331.3997802734375 -156.39898681640625 3365.3999633789062 -173.29910278320312Q3399.400146484375 -190.19921875 3425.30029296875 -219.2994384765625Q3451.200439453125 -248.399658203125 3462.6005859375 -286.199951171875Q3451.200439453125 -324.000244140625 3425.30029296875 -353.5004577636719Q3399.400146484375 -383.00067138671875 3365.3999633789062 -399.9007873535156Q3331.3997802734375 -416.8009033203125 3294.1995239257812 -416.8009033203125Q3257.999267578125 -416.8009033203125 3230.1990661621094 -399.9007873535156Q3202.3988647460938 -383.00067138671875 3186.8987426757812 -353.5004577636719Q3171.3986206054688 -324.000244140625 3171.3986206054688 -286.199951171875Z M3774.2002563476562 -573.1998901367188H4008.1986694335938L4042.1986694335938 -369.599853515625V0.0H3813.0001831054688V-377.0001220703125ZM4302.799072265625 -583.5997924804688V-388.801025390625Q4271.19921875 -394.801025390625 4244.399230957031 -397.4010314941406Q4217.5992431640625 -400.00103759765625 4196.19921875 -400.00103759765625Q4154.799011230469 -400.00103759765625 4119.798889160156 -384.4009094238281Q4084.7987670898438 -368.80078125 4063.4987182617188 -331.3006286621094Q4042.1986694335938 -293.80047607421875 4042.1986694335938 -228.00042724609375L4000.1988525390625 -280.2001953125Q4008.998779296875 -341.8001708984375 4024.6987915039062 -397.5001220703125Q4040.3988037109375 -453.2000732421875 4067.098846435547 -496.6000061035156Q4093.7988891601562 -539.9999389648438 4134.39892578125 -565.1998901367188Q4174.998962402344 -590.3998413085938 4234.39892578125 -590.3998413085938Q4250.398986816406 -590.3998413085938 4267.3990478515625 -588.6998291015625Q4284.399108886719 -586.9998168945312 4302.799072265625 -583.5997924804688Z M4327.799987792969 -405.200927734375V-504.2003173828125L4442.400085449219 -556.0L4541.9993896484375 -728.3997802734375H4671.598571777344V-573.1998901367188H4904.199035644531V-405.200927734375H4671.598571777344V-261.79937744140625Q4671.598571777344 -203.59918212890625 4694.498687744141 -179.89910888671875Q4717.3988037109375 -156.19903564453125 4783.1988525390625 -156.19903564453125Q4823.9989013671875 -156.19903564453125 4855.998931884766 -162.49908447265625Q4887.998962402344 -168.79913330078125 4914.199035644531 -178.79925537109375V-10.2001953125Q4881.799133300781 0.39984130859375 4832.699157714844 8.799896240234375Q4783.599182128906 17.199951171875 4730.399230957031 17.199951171875Q4632.199462890625 17.199951171875 4568.399658203125 -12.70001220703125Q4504.599853515625 -42.5999755859375 4473.499969482422 -98.69985961914062Q4442.400085449219 -154.79974365234375 4442.400085449219 -231.3995361328125V-405.200927734375Z M4993.200256347656 -583.5997924804688 5107.799499511719 -560.3999633789062 5222.398742675781 -583.5997924804688V0.0H4993.200256347656Z M6014.7987060546875 -191.19970703125Q6014.7987060546875 -122.19989013671875 5972.398864746094 -75.79995727539062Q5929.9990234375 -29.4000244140625 5852.599212646484 -6.10003662109375Q5775.199401855469 17.199951171875 5669.199523925781 17.199951171875Q5560.199645996094 17.199951171875 5477.799774169922 -9.10003662109375Q5395.39990234375 -35.4000244140625 5348.5 -83.10000610351562Q5301.60009765625 -130.79998779296875 5298.60009765625 -194.199951171875H5531.3985595703125Q5538.198547363281 -172.59979248046875 5557.098663330078 -157.69964599609375Q5575.998779296875 -142.79949951171875 5606.698974609375 -134.99942016601562Q5637.399169921875 -127.1993408203125 5680.599365234375 -127.1993408203125Q5735.199768066406 -127.1993408203125 5763.399963378906 -138.699462890625Q5791.600158691406 -150.1995849609375 5791.600158691406 -171.79986572265625Q5791.600158691406 -191.0 5769.300079345703 -199.50009155273438Q5747.0 -208.00018310546875 5694.199645996094 -211.80023193359375L5596.7994384765625 -218.60028076171875Q5491.599670410156 -225.80029296875 5429.599822998047 -247.80032348632812Q5367.5999755859375 -269.80035400390625 5340.800048828125 -306.40032958984375Q5314.0001220703125 -343.00030517578125 5314.0001220703125 -392.60015869140625Q5314.0001220703125 -459.4000244140625 5356.000030517578 -503.199951171875Q5397.999938964844 -546.9998779296875 5473.199768066406 -568.6998596191406Q5548.399597167969 -590.3998413085938 5648.599365234375 -590.3998413085938Q5747.7991943359375 -590.3998413085938 5824.799072265625 -565.099853515625Q5901.7989501953125 -539.7998657226562 5948.398864746094 -494.2998962402344Q5994.998779296875 -448.7999267578125 6002.398742675781 -388.5999755859375H5769.600280761719Q5764.80029296875 -407.60003662109375 5748.900238037109 -422.3001403808594Q5733.000183105469 -437.000244140625 5705.899993896484 -445.5003356933594Q5678.7998046875 -454.00042724609375 5638.3994140625 -454.00042724609375Q5587.59912109375 -454.00042724609375 5562.898895263672 -442.0003356933594Q5538.198669433594 -430.000244140625 5538.198669433594 -409.4000244140625Q5538.198669433594 -392.199951171875 5553.3988037109375 -383.6998291015625Q5568.598937988281 -375.19970703125 5611.999267578125 -372.399658203125L5741.399475097656 -363.39959716796875Q5844.999206542969 -356.99957275390625 5904.699035644531 -335.299560546875Q5964.398864746094 -313.59954833984375 5989.598785400391 -277.99957275390625Q6014.7987060546875 -242.39959716796875 6014.7987060546875 -191.19970703125Z M6038.799987792969 -405.200927734375V-504.2003173828125L6153.400085449219 -556.0L6252.9993896484375 -728.3997802734375H6382.598571777344V-573.1998901367188H6615.199035644531V-405.200927734375H6382.598571777344V-261.79937744140625Q6382.598571777344 -203.59918212890625 6405.498687744141 -179.89910888671875Q6428.3988037109375 -156.19903564453125 6494.1988525390625 -156.19903564453125Q6534.9989013671875 -156.19903564453125 6566.998931884766 -162.49908447265625Q6598.998962402344 -168.79913330078125 6625.199035644531 -178.79925537109375V-10.2001953125Q6592.799133300781 0.39984130859375 6543.699157714844 8.799896240234375Q6494.599182128906 17.199951171875 6441.399230957031 17.199951171875Q6343.199462890625 17.199951171875 6279.399658203125 -12.70001220703125Q6215.599853515625 -42.5999755859375 6184.499969482422 -98.69985961914062Q6153.400085449219 -154.79974365234375 6153.400085449219 -231.3995361328125V-405.200927734375Z"/><circle fill="#FF6A12" cx="5107.8" cy="-828.8" r="149.0"/></svg></div><div class="ta-title">Fire Spell</div><div class="ta-bar"><i></i></div><div class="ta-pct" aria-hidden="true">0%</div><div class="ta-go"><button class="ta-enter" type="button">Enter</button><button class="ta-quiet" type="button">Enter without sound</button></div><div class="ta-msg" id="loadMsg"></div></div><div class="ta-copy">© 2026 Techartist</div></div>
+<!-- /ta:loader -->
+<canvas id="stage"></canvas>
+<div id="bar">
+  <button id="play" data-on="1" aria-label="Pause">
+    <svg class="i-pause" viewBox="0 0 16 16"><rect x="3" y="2.5" width="3.6" height="11" rx="1"/><rect x="9.4" y="2.5" width="3.6" height="11" rx="1"/></svg>
+    <svg class="i-play" viewBox="0 0 16 16"><path d="M4 2.6v10.8a.6.6 0 0 0 .92.5l8.3-5.4a.6.6 0 0 0 0-1L4.92 2.1A.6.6 0 0 0 4 2.6z"/></svg>
+  </button>
+  <button id="again" aria-label="Play again">
+    <svg viewBox="0 0 16 16"><path d="M8 2.2a5.8 5.8 0 1 0 5.6 7.3.75.75 0 0 0-1.45-.4A4.3 4.3 0 1 1 8 3.7c1.1 0 2.1.42 2.86 1.1L9.3 6.3a.5.5 0 0 0 .36.86h3.6a.5.5 0 0 0 .5-.5v-3.6a.5.5 0 0 0-.86-.36l-1 1A5.8 5.8 0 0 0 8 2.2z"/></svg>
+  </button>
+  <div id="track">
+    <div id="rail"><div id="fill"></div></div>
+    <div id="ticks"></div>
+    <input id="scrub" type="range" min="0" max="13.58" step="0.01" value="0" aria-label="Time in the spell, seconds">
+  </div>
+  <button id="slow" data-on="0" aria-label="Quarter speed">&frac14;&times;</button>
+  <button id="sound" data-on="0" aria-label="Turn sound on">
+    <svg class="i-off" viewBox="0 0 16 16"><path d="M7.3 2.7 4.4 5.2H2.6a.8.8 0 0 0-.8.8v4a.8.8 0 0 0 .8.8h1.8l2.9 2.5a.6.6 0 0 0 1-.46V3.16a.6.6 0 0 0-1-.46z"/><path d="m10.4 6.2 3.6 3.6m0-3.6-3.6 3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <svg class="i-on" viewBox="0 0 16 16"><path d="M7.3 2.7 4.4 5.2H2.6a.8.8 0 0 0-.8.8v4a.8.8 0 0 0 .8.8h1.8l2.9 2.5a.6.6 0 0 0 1-.46V3.16a.6.6 0 0 0-1-.46z"/><path d="M10.3 5.7a3.2 3.2 0 0 1 0 4.6M12 4a5.6 5.6 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span class="lbl">Sound</span>
+  </button>
+  <button id="layers" data-on="0" aria-label="Breakdown: show the spell layer by layer" aria-expanded="false" aria-controls="panel">
+    <svg viewBox="0 0 16 16"><path d="M8 1.6 1.7 4.9 8 8.2l6.3-3.3L8 1.6z"/><path d="m2.6 7.6-.9.5L8 11.4l6.3-3.3-.9-.5L8 10.4 2.6 7.6z"/><path d="m2.6 10.8-.9.5L8 14.6l6.3-3.3-.9-.5L8 13.6l-5.4-2.8z"/></svg>
+    <span class="lbl">Breakdown</span>
+  </button>
+</div>
+<div id="beat"><b>0.0 s</b><span>Night in the lamp court</span></div>
+<div id="panel" hidden role="group" aria-label="Breakdown: show one layer of the spell">
+  <span id="stack"></span>
+  <button id="tour" aria-pressed="false" aria-label="Play the breakdown through">
+    <svg class="i-go" viewBox="0 0 16 16"><path d="M4 2.6v10.8a.6.6 0 0 0 .92.5l8.3-5.4a.6.6 0 0 0 0-1L4.92 2.1A.6.6 0 0 0 4 2.6z"/></svg>
+    <svg class="i-stop" viewBox="0 0 16 16"><rect x="3.5" y="3.5" width="9" height="9" rx="1.5"/></svg>
+    <span class="lbl">Play through</span>
+  </button>
+  <button id="about" aria-expanded="false" aria-controls="how" aria-label="How this layer is made">i</button>
+  <p id="how" hidden></p>
+</div>
+<div id="copy">&copy; <span id="year">2026</span> Techartist</div>
+<div id="nogpu" hidden>This fire runs as a live simulation on WebGPU. Open it in a current Chrome, Edge or Safari.</div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

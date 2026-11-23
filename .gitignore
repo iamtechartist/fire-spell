@@ -1,0 +1,12 @@
+/node_modules/
+/dist/
+# films and review media are handed over on their own, never committed
+/demo/
+/review/
+*.mp4
+*.mov
+*.webm
+*.mkv
+# the characters' source pictures and full-size models (the slimmed web copies are in public/models)
+/art_src/
+.DS_Store

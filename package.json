@@ -1,0 +1,18 @@
+{
+  "name": "fire-spell",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "author": "Techartist",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --port 5891 --strictPort --host 127.0.0.1",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "vite": "^7.3.7"
+  }
+}
