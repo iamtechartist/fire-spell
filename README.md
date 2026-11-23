@@ -1,5 +1,7 @@
 # Fire Spell
 
+**Live: [iamtechartist.github.io/fire-spell](https://iamtechartist.github.io/fire-spell/)** (needs a browser with WebGPU)
+
 An 11.6 second spell in a lamp court at night, drawn live in the browser. A mage writes a seal into the
 stone, the seal lifts her into the air with energy crackling under her feet, and one bolt wakes a furnace
 golem across the court. The court's lamps catch one after another as she works.
@@ -15,6 +17,7 @@ Needs WebGPU: a current Chrome, Edge or Safari. Built with three.js 0.187.0 and 
     npm install
     npm run dev          # http://127.0.0.1:5891
     npm run build        # static site in dist/
+    sh tools/deploy.sh   # build and publish dist/ to the gh-pages branch (GitHub Pages)
 
 Address flags: `?breakdown` opens the strip, `?tour` starts the play-through, `?skip` enters without the
 loader (muted), `?film` draws pixel for pixel for a film recorder, `?manual` stops the clock for the tools.

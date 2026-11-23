@@ -23,6 +23,13 @@ const shot = async (name) => { if (shots) await page.screenshot({ path: path.joi
 const setBar = (t) => page.evaluate(`(() => { const s = document.getElementById('scrub'); s.value = '${t}'; s.dispatchEvent(new Event('input', { bubbles: true })); })()`);
 const B = await page.evaluate('__fx.B');
 
+// the very first run after loading: any stall (a shader compiled late) shows here and nowhere else
+log('first run, frame times', await page.evaluate(`(async () => {
+  __fx.restart(); const d = []; let l = performance.now();
+  await new Promise(r => { (function f(){ const now = performance.now(); d.push([__fx.T, now - l]); l = now; (__fx.T < __fx.B.end - 0.1 && d.length < 2000) ? requestAnimationFrame(f) : r(); })(); });
+  const worst = d.slice(2).reduce((a, x) => x[1] > a[1] ? x : a, [0, 0]);
+  return { worstMs: Math.round(worst[1]), atClock: +worst[0].toFixed(2), over50ms: d.slice(2).filter(x => x[1] > 50).length };
+})()`));
 // sound: on by a real click, then one whole loop against the clock
 await page.click('#sound');
 await page.waitForFunction('window.__fx.audio.on', null, { timeout: 15000 });

@@ -767,6 +767,23 @@ window.__fx = {
   get state() { return { T: +T.toFixed(3), layer: VIEW.layer, raw: VIEW.raw, tour: TOUR, seeking: SEEK.on, cut: CUT.phase, fade: +VIEW.fade.toFixed(2), live: VIEW.live, playing: RUN.playing }; },
 };
 
+// Warm-up behind the loader: run the simulation and draw one frame with everything showing and every shadow
+// updating, so the graphics card compiles all its shaders and pipelines now. Otherwise the first time the fire,
+// the crescents, the bolt or a shadow appears, the page stalls for about a second.
+{
+  const showing = [ribbons.group, bolt.mesh, sparks.mesh, embers.mesh, volume.mesh, arcs.group];
+  const was = showing.map((o) => o.visible);
+  showing.forEach((o) => { o.visible = true; });
+  for (const L of [fireLight, keyLight, runeLight, courtLight, furnaceLight, liftLight]) L.intensity = Math.max(L.intensity, 1);
+  fireLight.shadow.autoUpdate = keyLight.shadow.autoUpdate = true;
+  simAt = ''; placeSim('seal');
+  sim.step(1 / 60); sim.light();
+  draw();
+  for (const raw of [2, 0]) { volume.U.debug.value = raw; draw(); }       // the breakdown's cut-open view is a branch of the same shader
+  await renderer.backend.device.queue.onSubmittedWorkDone();
+  showing.forEach((o, i) => { o.visible = was[i]; });
+  loader.progress(0.98);
+}
 restart();
 draw();
 window.__fx.ready = true;
